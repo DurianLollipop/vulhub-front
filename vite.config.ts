@@ -9,19 +9,21 @@ import IconResolver from 'unplugin-icons/resolver';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import Icons from 'unplugin-icons/vite';
 import vue from '@vitejs/plugin-vue';
+
 const pathSrc = path.resolve(__dirname, 'src');
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
-	const env = loadEnv(mode, process.cwd()); // 获取.env文件里定义的环境变量
+	// const env = loadEnv(mode, process.cwd()); // 获取.env文件里定义的环境变量
 	return {
-		base: env.VITE_PUBLIC_PATH, // 开发公共基础路径
+		base: process.env.VITE_PUBLIC_PATH, // 开发公共基础路径
+		envDir: './src/env',
 		resolve: {
 			//配置项目的绝对路径
 			alias: {
 				'@': resolve(__dirname, 'src'), // 设置 @ 指向 /src 目录
 			},
 		},
-		server: {
+		server: {	
 			port: 8818, //端口
 			host: '0.0.0.0',
 			cors: true, // 默认启用并允许任何源

@@ -3,8 +3,23 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 const constantRouterMap: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'test',
-    component: () => import('@/views/Vulhub_Index.vue'),
+    name: 'challenge',
+    component: () => import('@/views/Challenge.vue'),
+  },
+  {
+    path: '/challengeManagement',
+    name: 'challengeManagement',
+    component: () => import('@/views/ChallengeManagement.vue'),
+  },
+  {
+    path: '/commitManagement',
+    name: 'commitManagement',
+    component: () => import('@/views/CommitManagement.vue'),
+  },
+  {
+    path: '/challengeDetail/:id',
+    name: 'challengeDetail',
+    component: () => import('@/views/ChallengeDetail.vue'),
   },
 ]
 

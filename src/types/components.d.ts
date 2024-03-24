@@ -7,9 +7,37 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ElAvatar: typeof import('element-plus/es')['ElAvatar']
+    ElButton: typeof import('element-plus/es')['ElButton']
+    ElCard: typeof import('element-plus/es')['ElCard']
+    ElCol: typeof import('element-plus/es')['ElCol']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
+    ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
+    ElDescriptionsItem: typeof import('element-plus/es')['ElDescriptionsItem']
+    ElFooter: typeof import('element-plus/es')['ElFooter']
+    ElHeader: typeof import('element-plus/es')['ElHeader']
+    ElInput: typeof import('element-plus/es')['ElInput']
+    ElLink: typeof import('element-plus/es')['ElLink']
+    ElMain: typeof import('element-plus/es')['ElMain']
+    ElMenu: typeof import('element-plus/es')['ElMenu']
+    ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+    ElOption: typeof import('element-plus/es')['ElOption']
+    ElPagination: typeof import('element-plus/es')['ElPagination']
+    ElRow: typeof import('element-plus/es')['ElRow']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    ElTable: typeof import('element-plus/es')['ElTable']
+    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTag: typeof import('element-plus/es')['ElTag']
+    ElText: typeof import('element-plus/es')['ElText']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     HelloWorld: typeof import('./../components/HelloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+  }
+  export interface ComponentCustomProperties {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
   }
 }

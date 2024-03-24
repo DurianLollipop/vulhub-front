@@ -1,8 +1,12 @@
 //  api/index.ts
-import demoApi from "./demo-api";
+import userApi from "./user-api";
+import adminChallengeApi from "./admin-challenge-api";
+import challengeApi from "./challenge-api.ts"
 
 const api = {
-  ...demoApi,
+  ...userApi,
+  ...adminChallengeApi,
+  ...challengeApi
 };
 
 export default api;

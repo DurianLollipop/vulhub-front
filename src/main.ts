@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import './style.css';
+// import './style.css';
 import './permission';
 import { router } from '@/router';
 import { createPinia } from 'pinia';
@@ -10,3 +10,5 @@ import 'element-plus/theme-chalk/el-message.css'
 import 'element-plus/theme-chalk/el-message-box.css'
 
 createApp(App).use(createPinia()).use(router).mount('#app');
+
+console.log('VITE_APP_API_URL: ',  import.meta);

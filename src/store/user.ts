@@ -34,41 +34,20 @@ export const useUserStore = defineStore('user', () => {
     userInfo.value = user // 更新全局的userInfo变量为新的用户信息
   }
 
-  const setUserInfo = (ticket: string) => {
-    api.login(ticket)
-    .then((res) => {
-      if (res.data.data && res.data.code === 200) {
-        userInfo.value.admin = res.data.data.admin
-        userInfo.value.empNo = res.data.data.empNo
-        userInfo.value.token = res.data.data.token
-        userInfo.value.userName = res.data.data.userName
-        // SET_INFO(userInfo)
-        SET_TOKEN(res.data.data.token)
-      } else {
-        ElMessage.error('登录失败')
-      }
-    })
-    .catch((err) => {
-      ElMessage.error('登录失败', err)
-    });
-  }
-
   // 定义获取接口数据的action函数
   const getUserInfo = async (ticket: string) => {
     const res = await api.login(ticket)
-		if (res.data.data && res.data.code === 200) {
+		if (res.data.data && res.data.code === "200") {
 			userInfo.value.admin = res.data.data.admin
 			userInfo.value.empNo = res.data.data.empNo
 			userInfo.value.token = res.data.data.token
 			userInfo.value.userName = res.data.data.userName
 			userInfo.value.admin = res.data.data.admin
 			userInfo.value.userId = res.data.data.userId
-			// SET_INFO(userInfo)
 			SET_TOKEN(res.data.data.token)
 		} else {
-		ElMessage.error('登录失败')
+		  ElMessage.error('登录失败3')
 		}
-    return userInfo.value
   }
   
   async function remove() {
@@ -86,7 +65,6 @@ export const useUserStore = defineStore('user', () => {
     SET_TOKEN,
     SET_INFO,
     getUserInfo,
-    setUserInfo,
     clearUserInfo
   }
 })

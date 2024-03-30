@@ -21,11 +21,6 @@ export const useMeanStore =  defineStore('mean', () => {
   function setUserMenuList(admin: boolean) {
     if (admin) {
       menuList.value = [
-        // {
-        //   path: '/',
-        //   name: 'challenge',
-        //   component: () => import('@/views/Challenge.vue'),
-        // },
         {
           path: '/challengeManagement',
           name: 'challengeManagement',
@@ -36,27 +31,8 @@ export const useMeanStore =  defineStore('mean', () => {
           name: 'commitManagement',
           component: () => import('@/views/CommitManagement.vue'),
         },
-        // {
-        //   path: '/challengeDetail/:id',
-        //   name: 'challengeDetail',
-        //   component: () => import('@/views/ChallengeDetail.vue'),
-        // },
       ]
     } 
-    // else {
-    //   menuList.value = [
-    //     {
-    //       path: '/',
-    //       name: 'challenge',
-    //       component: () => import('@/views/Challenge.vue'),
-    //     },
-    //     {
-    //       path: '/challengeDetail/:id',
-    //       name: 'challengeDetail',
-    //       component: () => import('@/views/ChallengeDetail.vue'),
-    //     }
-    //   ]
-    // }
   }
   
  function setPermList(authoritys: any) {

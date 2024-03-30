@@ -43,11 +43,6 @@ watchEffect(() => {
 // 创建一个计算属性来生成头像的完整 URL
 const avatarUrl = computed(() => `http://172.26.1.1:1040/avatar/${userStore.userInfo.empNo}.jpg`);
 
-// const handleSelect = (key: string, keyPath: string[]) => {
-//   console.log("dddd", userStore.userInfo)
-//   console.log(key, keyPath)
-// }
-
 const locale = zhCn;
 
 // 然后将element-ui中pagination选项改掉

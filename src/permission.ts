@@ -13,20 +13,17 @@ router.beforeEach( async (to, _from, next) => {
 	if (!useUser.token) {
 	 	const params = new URLSearchParams(window.location.search);
 	 	const ticket = params.get('ticket')
-		if (!ticket) {
+		if (!ticket && !localStorage.token) {
 			// 单点登录
 			window.location.href = import.meta.env.VITE_APP_OOS_URL;
 		}
-		const userInfo = await useUser.getUserInfo(ticket);
-		if (userInfo.admin) {
-			useMean.setUserMenuList(userInfo.admin)
+		await useUser.getUserInfo(ticket);
+		if (useUser.userInfo.admin) {
+			useMean.setUserMenuList(useUser.userInfo.admin)
 			useMean.menuList.forEach((route) => {
 				router.addRoute(route);
 			  });
-		} else {
-			ElMessage.error('登录失败')
 		}
-		useMean.setUserMenuList(useUser.userInfo.admin)
 		next()
 	} else if (to.path === '/' || to.path === '') {
 	  next({path: '/'})

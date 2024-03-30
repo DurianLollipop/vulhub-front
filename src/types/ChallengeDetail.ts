@@ -5,5 +5,6 @@
     // wakeup: boolean
     commitTime: string
     status: string
+    openStatus: string
     // challengeType: string
   }

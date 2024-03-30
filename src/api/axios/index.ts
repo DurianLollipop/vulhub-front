@@ -81,7 +81,7 @@ instance.interceptors.request.use((config) => {
  */
 instance.interceptors.response.use(res => res,
   error => {
-    if(error.response.data.status===500&&(error.response.data.message==='token out time'||error.response.data.message==='登录失败或未登录')){
+    if(error.response.data.status==="500"&&(error.response.data.message==='token out time'||error.response.data.message==='登录失败或未登录')){
       api.logout();
       useUserStore.caller()
       window.location.href = import.meta.env.VITE_APP_OOS_URL;
@@ -89,7 +89,8 @@ instance.interceptors.response.use(res => res,
     const err = error.response.data.message;
     let msg: Promise<any> = Promise.reject(new Error('HTTP: 服务器遇到错误, 无法完成请求.'))
     if (err !== '' && err !== null && err !== undefined) {
-      ElMessage.error('请求错误', error.response.data.message)
+      console.log("1111", err);
+      ElMessage.error(err)
       msg = Promise.reject(error.response.data)
     }
     return msg;

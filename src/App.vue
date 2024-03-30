@@ -8,10 +8,12 @@
           </el-menu-item>
           <div class="flex-grow"/>
           <el-menu-item index="/">漏洞标靶</el-menu-item>
-          <el-menu-item index="/challengeManagement">挑战管理</el-menu-item>
-          <el-menu-item index="/commitManagement">解答提交管理</el-menu-item>
+          <template v-if="userStore.userInfo.admin">
+            <el-menu-item index="/challengeManagement">挑战管理</el-menu-item>
+            <el-menu-item index="/commitManagement">解答提交管理</el-menu-item>
+          </template>
           <el-menu-item index="4">
-            <el-avatar src="https://picsum.photos/200" />
+            <el-avatar :src="avatarUrl" />
           </el-menu-item>
         </el-menu>
       </el-header>
@@ -28,18 +30,23 @@
 <script setup lang="ts">
 import zhCn from 'element-plus/dist/locale/zh-cn';
 import { useRoute } from 'vue-router';
+import { useUserStore } from '@/store/user'
 
 const activeIndex = ref('')
+const userStore = useUserStore()
 
 const route = useRoute()
 watchEffect(() => {
   activeIndex.value = route.path 
 })
 
+// 创建一个计算属性来生成头像的完整 URL
+const avatarUrl = computed(() => `http://172.26.1.1:1040/avatar/${userStore.userInfo.empNo}.jpg`);
 
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+// const handleSelect = (key: string, keyPath: string[]) => {
+//   console.log("dddd", userStore.userInfo)
+//   console.log(key, keyPath)
+// }
 
 const locale = zhCn;
 

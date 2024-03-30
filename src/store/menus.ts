@@ -9,23 +9,67 @@ export const useMeanStore =  defineStore('mean', () => {
   const permList = ref([])
   const hasRoute = ref(false)
 
-
   function changeRouteStatus(state: any) {
     hasRoute.value = state
     sessionStorage.setItem("hasRoute", state)
   }
+
   function setMenuList(menus: any) {
     menuList.value = menus
   }
+
+  function setUserMenuList(admin: boolean) {
+    if (admin) {
+      menuList.value = [
+        // {
+        //   path: '/',
+        //   name: 'challenge',
+        //   component: () => import('@/views/Challenge.vue'),
+        // },
+        {
+          path: '/challengeManagement',
+          name: 'challengeManagement',
+          component: () => import('@/views/ChallengeManagement.vue'),
+        },
+        {
+          path: '/commitManagement',
+          name: 'commitManagement',
+          component: () => import('@/views/CommitManagement.vue'),
+        },
+        // {
+        //   path: '/challengeDetail/:id',
+        //   name: 'challengeDetail',
+        //   component: () => import('@/views/ChallengeDetail.vue'),
+        // },
+      ]
+    } 
+    // else {
+    //   menuList.value = [
+    //     {
+    //       path: '/',
+    //       name: 'challenge',
+    //       component: () => import('@/views/Challenge.vue'),
+    //     },
+    //     {
+    //       path: '/challengeDetail/:id',
+    //       name: 'challengeDetail',
+    //       component: () => import('@/views/ChallengeDetail.vue'),
+    //     }
+    //   ]
+    // }
+  }
+  
  function setPermList(authoritys: any) {
     permList.value = authoritys
   }
+
   return {
     menuList,
     permList,
     hasRoute,
     changeRouteStatus,
     setMenuList,
-    setPermList
+    setPermList,
+    setUserMenuList,
   }
 })

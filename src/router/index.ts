@@ -6,16 +6,16 @@ const constantRouterMap: Array<RouteRecordRaw> = [
     name: 'challenge',
     component: () => import('@/views/Challenge.vue'),
   },
-  {
-    path: '/challengeManagement',
-    name: 'challengeManagement',
-    component: () => import('@/views/ChallengeManagement.vue'),
-  },
-  {
-    path: '/commitManagement',
-    name: 'commitManagement',
-    component: () => import('@/views/CommitManagement.vue'),
-  },
+  // {
+  //   path: '/challengeManagement',
+  //   name: 'challengeManagement',
+  //   component: () => import('@/views/ChallengeManagement.vue'),
+  // },
+  // {
+  //   path: '/commitManagement',
+  //   name: 'commitManagement',
+  //   component: () => import('@/views/CommitManagement.vue'),
+  // },
   {
     path: '/challengeDetail/:id',
     name: 'challengeDetail',

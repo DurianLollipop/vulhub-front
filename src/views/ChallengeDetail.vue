@@ -86,26 +86,11 @@ const changeFile = (uploadFile: UploadFile) => {
     file.value = uploadFile;
 }
 
-const previewFile: UploadProps['onPreview'] = (uploadFile) => {
-  console.log(uploadFile)
-}
-
 const submitUpload = () => {
-  //   const data = {'challengeName': challengeDetail.value.name,
-  //   // 这里很重要 file.value.raw才是真实的file文件，file.value只是一个Proxy代理对象
-  //   'file': file.value.raw
-  // }
     upload.value.submit();
-
-    
-    // api.uploadFile(data).then(res => {
-    //     console.log(res);
-    //     console.log(res.data);
-    // });
 }
 
 const getChallengeStatus = (challengeStatus: string) => {
-  console.log("fffffff", challengeStatus)
   let status: EpPropMergeType<StringConstructor, "" | "success" | "warning" | "info" | "danger", unknown>;
   if (challengeStatus ==='OPEN') {
     status = 'info';

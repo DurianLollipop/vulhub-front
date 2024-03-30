@@ -10,5 +10,3 @@ import 'element-plus/theme-chalk/el-message.css'
 import 'element-plus/theme-chalk/el-message-box.css'
 
 createApp(App).use(createPinia()).use(router).mount('#app');
-
-console.log('VITE_APP_API_URL: ',  import.meta);

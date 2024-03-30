@@ -79,9 +79,7 @@ instance.interceptors.request.use((config) => {
 /**
  * http response 响应拦截器
  */
-instance.interceptors.response.use(res => {
-    console.log('请求成功', res);
-    return res},
+instance.interceptors.response.use(res => res,
   error => {
     if(error.response.data.status===500&&(error.response.data.message==='token out time'||error.response.data.message==='登录失败或未登录')){
       api.logout();

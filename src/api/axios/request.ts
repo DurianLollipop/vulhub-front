@@ -14,12 +14,9 @@ export class Request {
       ...data
     })
     .then((res: AxiosResponse) => {
-        console.log("成功", res);
-
         resolve(res);
       })
       .catch((err) => {
-        console.log("发起请求失败");
         reject(err);
       });
   });

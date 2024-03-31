@@ -3,7 +3,8 @@ import { defineStore } from 'pinia'
 import api from '@/api/index'
 import { ref } from 'vue';
 
-interface UserInfo {
+export interface UserInfo {
+  userId: string;
   userName: string;
   empNo: string;
   token: string;
@@ -13,7 +14,13 @@ interface UserInfo {
 export const useUserStore = defineStore('user', () => {
   const token = ref("")
   //定义管理用户数据的state
-  const userInfo = ref<UserInfo>({ admin: false })
+  const userInfo = ref<UserInfo>({
+    userId: '', // 初始化值
+    userName: '',
+    empNo: '',
+    token: '',
+    admin: false,
+  });
   // 设置用户信息
   function SET_TOKEN(name: string) {
     token.value = name
@@ -45,16 +52,18 @@ export const useUserStore = defineStore('user', () => {
 			userInfo.value.admin = res.data.data.admin
 			userInfo.value.userId = res.data.data.userId
 			SET_TOKEN(res.data.data.token)
+      localStorage.setItem("userInfo", JSON.stringify(userInfo))
 		} else {
 		  ElMessage.error('登录失败3')
 		}
   }
   
   async function remove() {
-    await api.logout()
     localStorage.clear()
     sessionStorage.clear()
     SET_INFO({} as UserInfo)
+    // 单点退出
+    window.location.href = import.meta.env.VITE_APP_OOS_LOGOUT_URL
   }
   
   return {

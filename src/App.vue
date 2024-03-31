@@ -12,9 +12,12 @@
             <el-menu-item index="/challengeManagement">挑战管理</el-menu-item>
             <el-menu-item index="/commitManagement">解答提交管理</el-menu-item>
           </template>
-          <el-menu-item index="4">
-            <el-avatar :src="avatarUrl" />
-          </el-menu-item>
+          <!-- <el-menu-item index="4"> -->
+            <el-avatar class="margin-top-12" :src="avatarUrl" />
+            <template v-if="userStore.userInfo.token">
+              <el-button class="ml-5" link @click="logout">退出</el-button>
+            </template>
+          <!-- </el-menu-item> -->
         </el-menu>
       </el-header>
       <el-main>
@@ -35,9 +38,22 @@ import { useUserStore } from '@/store/user'
 const activeIndex = ref('')
 const userStore = useUserStore()
 
+const handleSelect = (key: string, keyPath: string[]) => {
+  console.log("dddd", userStore.userInfo)
+  console.log(key, keyPath)
+}
+
+const logout = () => {
+  userStore.remove()
+}
+
 const route = useRoute()
 watchEffect(() => {
-  activeIndex.value = route.path 
+  if(route.path.includes('/challengeDetail/')) {
+    activeIndex.value = '/' 
+  } else {
+    activeIndex.value = route.path 
+  }
 })
 
 // 创建一个计算属性来生成头像的完整 URL
@@ -54,7 +70,7 @@ zhCn.el.pagination = {
 };
 
 const config = reactive({
-	max: 4,
+	max: 3,
 });
 </script>
 
@@ -71,6 +87,6 @@ const config = reactive({
   margin-top: 12px;
 }
 
-.ml-2 {
+.ml-5 {
   margin-left: 5px;
 }</style>

@@ -6,5 +6,6 @@
     commitTime: string
     status: string
     openStatus: string
+    address: string[]
     // challengeType: string
   }

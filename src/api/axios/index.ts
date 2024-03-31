@@ -1,6 +1,4 @@
 import axios, { AxiosRequestConfig, Method } from "axios";
-import { useUserStore } from "@/store/user";
-import api from "@/api/index";
 
 //异常对象接口
 interface ERROR_OBJ {
@@ -42,20 +40,6 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-// http request 请求拦截器
-// instance.interceptors.request.use(
-//   config => {
-//     // 这里判断localStorage里面是否存在token，如果有则在请求头里面设置
-//     if (localStorage.jwtToken) {
-//       config.headers.Authorization = getLocalStorage("jwtToken");
-//     }
-//     return config
-//   },
-//   err => {
-//     return Promise.reject(err)
-//   }
-// )
-
 /**
  * 请求拦截器
  * 功能：配置请求头
@@ -64,10 +48,6 @@ instance.interceptors.request.use((config) => {
     if (!(localStorage.token === 'undefined')) {
       config.headers.Authorization  = `Bearer ${localStorage.token}`;
     }
-    // if (config.url.includes('upload')) {
-    //   config.headers.Accept = 'application/json';
-    //   config.headers['Content-Type'] = 'multipart/form-data';
-    // }
     return config;
   },
   (error) => {
@@ -79,17 +59,21 @@ instance.interceptors.request.use((config) => {
 /**
  * http response 响应拦截器
  */
-instance.interceptors.response.use(res => res,
+instance.interceptors.response.use(res => {
+  console.log("aaaa", res)
+  return res;
+},
   error => {
+
+    if(error.config.url.includes('challenges')) {
+      return error.response.data
+    }
     if(error.response.data.status==="500"&&(error.response.data.message==='token out time'||error.response.data.message==='登录失败或未登录')){
-      api.logout();
-      useUserStore.caller()
       window.location.href = import.meta.env.VITE_APP_OOS_URL;
     }
     const err = error.response.data.message;
     let msg: Promise<any> = Promise.reject(new Error('HTTP: 服务器遇到错误, 无法完成请求.'))
     if (err !== '' && err !== null && err !== undefined) {
-      console.log("1111", err);
       ElMessage.error(err)
       msg = Promise.reject(error.response.data)
     }

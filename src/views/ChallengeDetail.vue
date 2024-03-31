@@ -24,7 +24,11 @@
           <el-descriptions-item label="场景操作：" label-align="center">
             <el-button type="primary" size="small" @click="openScene">开启场景</el-button>
           </el-descriptions-item>
-
+          <template v-if="challengeDetail?.address">
+            <el-descriptions-item v-for="(item, index) in challengeDetail?.address" :key="index" label-align="center">
+              <el-link type="primary" :href="item" target="_blank">{{ item }}</el-link>
+            </el-descriptions-item> 
+          </template>
           <el-descriptions-item label="Wakeup：" label-align="center" style="display: flex; justify-content: space-between;">
             <el-upload
               class="inline-block"
@@ -101,13 +105,11 @@ const submitUpload = () => {
 }
 
 const getChallengeStatus = (challengeStatus: string) => {
-  let status: EpPropMergeType<StringConstructor, "" | "success" | "warning" | "info" | "danger", unknown>;
+  let status: EpPropMergeType<StringConstructor, "" | "success" | "warning" | "info" | "danger" | "", unknown>;
   if (challengeStatus === 'OPEN') {
-    status = 'info';
-  } else if (challengeStatus === 'SUBMIT') {
     status = 'success';
-  } else if (challengeStatus === '') {
-    status = 'danger';
+  } else {
+    status = 'info';
   }
   return status;
 }
@@ -116,10 +118,8 @@ const getChallengeStatusText = (challengeStatus: string) => {
   let text = '';
   if (challengeStatus === 'OPEN') {
     text = '开启';
-  } else if (challengeStatus === 'SHOW') {
-    text = '通过';
-  } else if (challengeStatus === 'SUBMIT') {
-    text = '提交';
+  } else {
+    text = '未开启';
   }
   return text;
 }

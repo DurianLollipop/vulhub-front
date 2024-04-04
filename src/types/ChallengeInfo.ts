@@ -3,4 +3,5 @@ interface ChallengeInfo {
     name: string
     challengeType: string
     status: string
+    openStatus: string
 }

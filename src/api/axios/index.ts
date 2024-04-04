@@ -60,19 +60,22 @@ instance.interceptors.request.use((config) => {
  * http response 响应拦截器
  */
 instance.interceptors.response.use(res => {
-  console.log("aaaa", res)
-  return res;
+  if(res.status===403){
+    localStorage.token = '';
+    localStorage.removeItem('token');
+    window.location.href = import.meta.env.VITE_APP_OOS_URL;
+  }
+  return res
 },
   error => {
-
     if(error.config.url.includes('challenges')) {
       return error.response.data
     }
-    if(error.response.data.status==="500"&&(error.response.data.message==='token out time'||error.response.data.message==='登录失败或未登录')){
+    if(error.response.data.code==="403"&&(error.response.data.message==='token out time'||error.response.data.message==='登录失败或未登录')){
       window.location.href = import.meta.env.VITE_APP_OOS_URL;
     }
     const err = error.response.data.message;
-    let msg: Promise<any> = Promise.reject(new Error('HTTP: 服务器遇到错误, 无法完成请求.'))
+    let msg: Promise<any> = Promise.reject(new Error(`请求错误：${err}`))
     if (err !== '' && err !== null && err !== undefined) {
       ElMessage.error(err)
       msg = Promise.reject(error.response.data)

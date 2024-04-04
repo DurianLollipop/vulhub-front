@@ -4,7 +4,7 @@
       <el-header>
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false" @select="handleSelect" :router="true">
           <el-menu-item index="0">
-            <img style="width: 100px" src="@/assets/element-plus-logo.svg" alt="Element logo" />
+            <img style="width: 100px" src="@/assets/vulhub.png" alt="Element logo" />
           </el-menu-item>
           <div class="flex-grow"/>
           <el-menu-item index="/">漏洞标靶</el-menu-item>

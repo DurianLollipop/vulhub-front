@@ -22,11 +22,16 @@
             <el-tag size="small" :type="getChallengeStatus(challengeDetail?.openStatus)">{{ getChallengeStatusText(challengeDetail?.openStatus) }}</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="场景操作：" label-align="center">
-            <el-button type="primary" size="small" @click="openScene">开启场景</el-button>
+            <template v-if="challengeDetail?.openStatus !== 'OPEN'">
+              <el-button type="primary" size="small" @click="openScene">开启场景</el-button>
+            </template>
+            <template v-if="challengeDetail?.openStatus === 'OPEN'">
+              <el-button type="primary" size="small" @click="closeScene">关闭场景</el-button>
+            </template>
           </el-descriptions-item>
           <template v-if="challengeDetail?.address">
             <el-descriptions-item v-for="(item, index) in challengeDetail?.address" :key="index" label-align="center">
-              <el-link type="primary" :href="item" target="_blank">{{ item }}</el-link>
+              <el-link type="primary" :href="item" @click="openNewPage(item)">{{ item }}</el-link>
             </el-descriptions-item> 
           </template>
           <el-descriptions-item label="Wakeup：" label-align="center" style="display: flex; justify-content: space-between;">
@@ -84,7 +89,8 @@ const formattedCountdown = () => {
 const openScene = () => {
   api.openScene(challengeDetail.value.id)
     .then((res) => {
-      if (res.data.data && res.data.data.code === "200") {
+      if (res.data && res.data.code === "200") {
+        challengeDetail.value.address = res.data.data;
         ElMessage.success('场景开启成功')
       } else {
         ElMessage.error('场景开启失败')
@@ -95,6 +101,20 @@ const openScene = () => {
     });
 }
 
+const closeScene = () => {
+  api.closeScene(challengeDetail.value.id)
+    .then((res) => {
+      if (res.data && res.data.code === "200") {
+        challengeDetail.value.address = [];
+        ElMessage.success('场景关闭成功')
+      } else {
+        ElMessage.error('场景关闭失败')
+      }
+    })
+    .catch((err) => {
+      ElMessage.error('场景关闭失败', err)
+    });
+}
 
 const changeFile = (uploadFile: UploadFile) => {
     file.value = uploadFile;
@@ -154,14 +174,17 @@ const loadData = (challengeId: string) => {
     })
 }
 
+const openNewPage = (url: string) => {
+  window.open(`http://${url}`, '_blank');
+}
 
 onMounted(()=> {
   loadData(`${router.currentRoute.value.params.id}`)
 })
 
 onBeforeUnmount(() => {
-     clearInterval(intervalId);
-   });
+  clearInterval(intervalId);
+});
 
 </script>
 

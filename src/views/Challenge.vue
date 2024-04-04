@@ -10,7 +10,7 @@
           :offset="index%4 > 0 ? 1 : 0"
           class="margin-top-2"
         >
-        <el-card @click="gotoChallenge(data.id)" shadow="always" class="margin-top-28">
+        <el-card @click="gotoChallenge(data.id)" shadow="always" class="margin-top-28 card-color" >
           <template #header>
             <div class="card-header">
               <el-tooltip
@@ -24,12 +24,9 @@
             </div>
           </template>
           <div>
-            <img
-              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-              class="image"
-            />
+            <img src="@/assets/info.png" class="image" />
           </div>
-          <template #footer>{{ data.status === 'SHOW' ? '未挑战' : '已挑战' }}</template>
+          <template #footer>{{ formatOpenStatus(data.openStatus) }}</template>
         </el-card>
         </el-col>
       </el-row>
@@ -39,6 +36,7 @@
   
 </template>
 
+
 <script lang="ts" setup>
 import {useRouter } from 'vue-router'
 import api from '@/api/index'
@@ -46,7 +44,7 @@ const tableData = ref<ChallengeInfo[]>([])
 // 当前页数
 const currentPage = ref(1);
 // 每页条数
-const pageSize = 10;
+const pageSize = 8;
 const scrollDisabled = ref(true);
 const contentShow = ref(true);
 const infiniteMsgShow = ref(false);
@@ -90,13 +88,23 @@ const loadData = (params: object) => {
     })
 }
 
+const formatOpenStatus = (openStatus: string) => {
+  let openStatusStr = '未挑战';
+  if (openStatus === 'OPEN') {
+    openStatusStr = '正在挑战';
+  } else if (openStatus === 'SUBMIT') {
+    openStatusStr = '已挑战';
+  }
+  return openStatusStr;
+}
+
 const loadMore = () => {         
   scrollDisabled.value=true  //将无限滚动给禁用
   setTimeout(() => {  //发送请求有时间间隔第一个滚动时间结束后才发送第二个请求
     currentPage.value += 1;  //滚动之后加载第二页
     const request = {
     "page": currentPage.value,
-    "size": 10
+    "size": 8
   }
     loadData(request);
   }, 500);
@@ -105,13 +113,21 @@ const loadMore = () => {
 onMounted(()=>{
   const params = {
     "page": currentPage.value,
-    "size": 10
+    "size": 8
   }
   loadData(params);
 })
 </script>
 
 <style>
+
+.card-color{
+  /* 设置背景色为红色，透明度为0.5 */
+  background-color: rgba(157, 198, 255, 0.05);
+   /* background-color: rgba(255, 255, 255, 0.01);  */
+
+}
+
 .margin-left-12 {
   margin-left: 12px;
 }

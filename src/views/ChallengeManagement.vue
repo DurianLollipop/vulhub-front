@@ -117,12 +117,13 @@ const beforeShowChangeManage = (row: any) => new Promise((resolve, reject)=>{
     row.switchLoading = true;
     api.updateChallengesStatus(request)
     .then(response => {
-      if(response.data && response.data.code === 200) {
+      console.log(response.data)
+      if(response.data && response.data.code === "200") {
         resolve(true)   
         row.switchLoading = false;
         ElMessage.success('状态更新成功')
       } else {
-        reject(new Error("服务器异常"))   
+        reject(new Error("状态更新失败"))   
         row.switchLoading = false;
         ElMessage.error('状态更新失败')
       }

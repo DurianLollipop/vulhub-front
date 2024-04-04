@@ -14,11 +14,13 @@ router.beforeEach( async (to, _from, next) => {
 
 	if (!useUser.token && cacheUserInfo) {
 		useUser.SET_INFO(cacheUserInfo)
+		// todo 待优化
+		useUser.token = cacheUserInfo.token
 	}
 	if (!useUser.token) {
 	 	const params = new URLSearchParams(window.location.search);
 	 	const ticket = params.get('ticket')
-		if (!ticket && !localStorage.token) {
+		if (!localStorage.token) {
 			// 单点登录
 			window.location.href = import.meta.env.VITE_APP_OOS_URL;
 		}

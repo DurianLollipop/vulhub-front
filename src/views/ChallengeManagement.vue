@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeMount } from 'vue'
 import api from '@/api/index'
 
 const searchType = ref('Type_Name')
@@ -85,6 +85,17 @@ const loadData = (params: object) => {
 }
 
 onMounted(()=>{
+  console.log("ggggg")
+  const params = {
+    "page": currentPage.value,
+    "size": 10
+  }
+  loadData(params);
+})
+
+onBeforeMount(() => {
+  console.log("hhhh")
+
   const params = {
     "page": currentPage.value,
     "size": 10
@@ -117,7 +128,6 @@ const beforeShowChangeManage = (row: any) => new Promise((resolve, reject)=>{
     row.switchLoading = true;
     api.updateChallengesStatus(request)
     .then(response => {
-      console.log(response.data)
       if(response.data && response.data.code === "200") {
         resolve(true)   
         row.switchLoading = false;

@@ -23,22 +23,22 @@
           </el-descriptions-item>
           <el-descriptions-item label="场景操作：" label-align="center">
             <template v-if="challengeDetail?.openStatus !== 'OPEN'">
-              <el-button type="primary" size="small" @click="openScene">开启场景</el-button>
+              <el-button type="primary" size="small" @click="openScene" :loading="isSending">开启场景</el-button>
             </template>
             <template v-if="challengeDetail?.openStatus === 'OPEN'">
-              <el-button type="primary" size="small" @click="closeScene">关闭场景</el-button>
+              <el-button type="primary" size="small" @click="closeScene" :loading="isSending">关闭场景</el-button>
             </template>
           </el-descriptions-item>
           <template v-if="challengeDetail?.address">
             <el-descriptions-item v-for="(item, index) in challengeDetail?.address" :key="index" label-align="center">
-              <el-link type="primary" :href="item" @click="openNewPage(item)">{{ item }}</el-link>
+              <el-link type="primary" @click="openNewPage(item)">{{ item }}</el-link>
             </el-descriptions-item> 
           </template>
           <el-descriptions-item label="Wakeup：" label-align="center" style="display: flex; justify-content: space-between;">
             <el-upload
               class="inline-block"
               :headers="tokenHeaders"
-              :action="`http://localhost:9999/v1/wakeup/upload/${challengeDetail?.id}`"
+              :action="`${getAppUrl()}/v1/wakeup/upload/${challengeDetail?.id}`"
               :limit="1"
               ref="upload"
               :on-change="changeFile"
@@ -66,11 +66,14 @@ import type  { EpPropMergeType } from "element-plus/es/utils/vue/props/types"
 
 const router = useRouter()
 const file = ref()
+const isSending = ref(false);
 const formData = ref<FormData | null>();
 const upload = ref(null); // 定义一个ref引用el-upload组件
 const countdown = ref();
 let intervalId;
 const timeStr = ref('00分00秒')
+
+const getAppUrl = () => import.meta.env.VITE_APP_API_URL;
 
 const tokenHeaders = {
     Authorization: `Bearer ${localStorage.token}`
@@ -86,32 +89,59 @@ const formattedCountdown = () => {
   return `${minutes}分${Math.trunc(seconds)}秒`;
 };
 
+const initTimer = (time: number) => {
+  countdown.value = time;
+  intervalId = setInterval(() => {
+    countdown.value -= 1;
+    timeStr.value = formattedCountdown();
+    if (countdown.value <= 0) {
+      clearInterval(intervalId);
+    }
+  }, 1000);
+}
+
+const clearTimer = () => {
+  countdown.value = 0;
+  timeStr.value = formattedCountdown();
+  clearInterval(intervalId);
+}
+
 const openScene = () => {
+  isSending.value = true;
   api.openScene(challengeDetail.value.id)
     .then((res) => {
+      isSending.value = false;
       if (res.data && res.data.code === "200") {
         challengeDetail.value.address = res.data.data;
+        challengeDetail.value.openStatus = 'OPEN'
+        initTimer(2 * 60 * 60);
         ElMessage.success('场景开启成功')
       } else {
         ElMessage.error('场景开启失败')
       }
     })
     .catch((err) => {
+      isSending.value = false;
       ElMessage.error('场景开启失败', err)
     });
 }
 
 const closeScene = () => {
+  isSending.value = true;
   api.closeScene(challengeDetail.value.id)
     .then((res) => {
+      isSending.value = false;
       if (res.data && res.data.code === "200") {
         challengeDetail.value.address = [];
+        challengeDetail.value.openStatus = ''
+        clearTimer();
         ElMessage.success('场景关闭成功')
       } else {
         ElMessage.error('场景关闭失败')
       }
     })
     .catch((err) => {
+      isSending.value = false;
       ElMessage.error('场景关闭失败', err)
     });
 }
@@ -122,6 +152,9 @@ const changeFile = (uploadFile: UploadFile) => {
 
 const submitUpload = () => {
     upload.value.submit();
+    challengeDetail.value.address = [];
+    challengeDetail.value.openStatus = '';
+    clearInterval(intervalId);
 }
 
 const getChallengeStatus = (challengeStatus: string) => {
@@ -155,16 +188,8 @@ const loadData = (challengeId: string) => {
           const date2: any = new Date();
           // 计算剩余时间
           const hastimes = (2 * 60 * 60) - ((date2.getTime() - date1.getTime())/1000)
-
           if (hastimes > 0) {
-            countdown.value = hastimes;
-            intervalId = setInterval(() => {
-              countdown.value -= 1;
-              timeStr.value = formattedCountdown();
-              if (countdown.value <= 0) {
-                clearInterval(intervalId);
-              }
-            }, 1000);
+            initTimer(hastimes);
           }
         }
       }

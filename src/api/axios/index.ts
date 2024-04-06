@@ -33,7 +33,7 @@ const pending: Array<PendingType> = [];
 /* 实例化请求配置 */
 const instance = axios.create({
   // 请求时长
-  timeout: 1000 * 20,
+  timeout: 1000 * 60 * 3,
   // 请求的base地址 TODO:这块以后根据不同的模块调不同的api
   baseURL: import.meta.env.VITE_APP_API_URL,
   // 表示跨域请求时是否需要使用凭证
@@ -48,12 +48,12 @@ instance.interceptors.request.use((config) => {
     if (!(localStorage.token === 'undefined')) {
       config.headers.Authorization  = `Bearer ${localStorage.token}`;
     }
+    if (config.url.includes("download")) {
+      config.responseType = "blob";
+    }
     return config;
   },
-  (error) => {
-    console.error('网络错误，请稍后重试');
-    return Promise.reject(error);
-  },
+  (error) => Promise.reject(error) ,
 );
 
 /**
@@ -63,15 +63,15 @@ instance.interceptors.response.use(res => {
   if(res.status===403){
     localStorage.token = '';
     localStorage.removeItem('token');
-    window.location.href = import.meta.env.VITE_APP_OOS_URL;
-  }
+    // window.location.href = import.meta.env.VITE_APP_OOS_URL;
+  } 
   return res
 },
   error => {
     if(error.config.url.includes('challenges')) {
       return error.response.data
     }
-    if(error.response.data.code==="403"&&(error.response.data.message==='token out time'||error.response.data.message==='登录失败或未登录')){
+    if(error.response.data.code==="403"){
       window.location.href = import.meta.env.VITE_APP_OOS_URL;
     }
     const err = error.response.data.message;
@@ -85,14 +85,10 @@ instance.interceptors.response.use(res => {
 
 /**
  * 请求失败后的错误统一处理
+ * 这里处理 需要token鉴权的接口
  * @param {Number} status 请求失败的状态码
  */
-const errorHandle = (status: any) => {
-  const httpCode = status.response.status;
-  console.log(httpCode)
-  //这里处理 需要token鉴权的接口
-  return Promise.reject();
-};
+const errorHandle = (_status: any) =>  Promise.reject();
 
 // 移除重复请求
 const removePending = (config: AxiosRequestConfig) => {

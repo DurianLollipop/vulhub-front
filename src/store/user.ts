@@ -38,7 +38,17 @@ export const useUserStore = defineStore('user', () => {
    * 该函数没有返回值
    */
   function SET_INFO(user: UserInfo) {
+    token.value = user.token
+    localStorage.setItem("token", user.token)
     userInfo.value = user // 更新全局的userInfo变量为新的用户信息
+  }
+
+  async function remove() {
+    localStorage.clear()
+    sessionStorage.clear()
+    SET_INFO({} as UserInfo)
+    // 单点退出
+    window.location.href = import.meta.env.VITE_APP_OOS_LOGOUT_URL
   }
 
   // 定义获取接口数据的action函数
@@ -52,18 +62,11 @@ export const useUserStore = defineStore('user', () => {
 			userInfo.value.admin = res.data.data.admin
 			userInfo.value.userId = res.data.data.userId
 			SET_TOKEN(res.data.data.token)
-      localStorage.setItem("userInfo", JSON.stringify(userInfo))
+      localStorage.setItem("userInfo", JSON.stringify(userInfo.value))
 		} else {
+      remove();
 		  ElMessage.error('登录失败3')
 		}
-  }
-  
-  async function remove() {
-    localStorage.clear()
-    sessionStorage.clear()
-    SET_INFO({} as UserInfo)
-    // 单点退出
-    window.location.href = import.meta.env.VITE_APP_OOS_LOGOUT_URL
   }
   
   return {

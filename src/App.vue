@@ -38,9 +38,8 @@ import { useUserStore } from '@/store/user'
 const activeIndex = ref('')
 const userStore = useUserStore()
 
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log("dddd", userStore.userInfo)
-  console.log(key, keyPath)
+const handleSelect = (_key: string, _keyPath: string[]) => {
+  
 }
 
 const logout = () => {

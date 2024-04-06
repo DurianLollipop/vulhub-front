@@ -6,34 +6,40 @@ import { useUserStore, UserInfo } from '@/store/user'
 // 路由切换之前触发
 // @router/routers.ts 中添加前置路由守卫
 router.beforeEach( async (to, _from, next) => {
-	next()
 	// 注意：在beforeEach中调用pinia存储的菜单状态是为了避免` Did you forget to install pinia?`这个bug
 	const useMean = useMeanStore()
 	const useUser = useUserStore()
 	const cacheUserInfo: UserInfo = JSON.parse(localStorage.getItem('userInfo')); // 仅为示例，实际操作请根据实际情况处理
 
-	if (!useUser.token && cacheUserInfo) {
+	if (cacheUserInfo) {
 		useUser.SET_INFO(cacheUserInfo)
-		// todo 待优化
-		useUser.token = cacheUserInfo.token
+		useMean.setUserMenuList(useUser.userInfo.admin)
+		router.getRoutes().forEach((route) => {
+			console.log("+++++", route.path)
+		});
+		useMean.menuList.forEach(route => {
+			router.addRoute(route);
+		});
+
+		router.getRoutes().forEach((route) => {
+			console.log("------", route.path)
+		});
 	}
 	if (!useUser.token) {
 	 	const params = new URLSearchParams(window.location.search);
 	 	const ticket = params.get('ticket')
-		if (!localStorage.token) {
+		if (!ticket && !localStorage.token) {
 			// 单点登录
 			window.location.href = import.meta.env.VITE_APP_OOS_URL;
 		}
 		await useUser.getUserInfo(ticket);
 		if (useUser.userInfo.admin) {
 			useMean.setUserMenuList(useUser.userInfo.admin)
-			useMean.menuList.forEach((route) => {
+			useMean.menuList.forEach(route => {
 				router.addRoute(route);
 			});
 		}
-		next()
-	} else if (to.path === '/' || to.path === '') {
-	  next({path: '/'})
+		next({...to, replace: true})
 	} else {
 		next()
 	}

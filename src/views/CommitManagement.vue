@@ -19,7 +19,7 @@
               <el-table-column prop="submitUser" label="提交人" width="100" />
               <el-table-column prop="fileName" label="wakeup" width="100">
                 <template #default="scope">
-                  <el-link type="primary" :href="scope.row.fileName" target="_blank">下载</el-link>
+                  <el-link type="primary" @click="downloadFile(scope.row.fileName)" target="_blank">下载</el-link>
                 </template>
                 </el-table-column>
               <el-table-column prop="submitTime" label="提交时间" width="200" />
@@ -37,6 +37,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import api from '@/api/index'
+
 const challengeNameValue = ref('')
 // 总记录数
 const total = ref(0)
@@ -59,6 +60,19 @@ const loadData = (params: object) => {
   .catch(error => {
     ElMessage.error('数据加载失败', error)
   });
+}
+
+const downloadFile = (fileName: string) => {
+  api.downloadFile(fileName)
+  .then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=binary'}));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+  })
+ .catch()
 }
 
 onMounted(()=>{

@@ -17,7 +17,7 @@
               <el-table-column prop="id" label="Id" width="60" />
               <el-table-column prop="challengeName" label="挑战名称" width="auto" min-width="25%" />
               <el-table-column prop="submitUser" label="提交人" width="100" />
-              <el-table-column prop="fileName" label="wakeup" width="100">
+              <el-table-column prop="fileName" label="WriteUp" width="100">
                 <template #default="scope">
                   <el-link type="primary" @click="downloadFile(scope.row.fileName)" target="_blank">下载</el-link>
                 </template>

@@ -16,8 +16,8 @@
         </template>
         <el-descriptions :column="1">
           <el-descriptions-item label="挑战名称: ">{{ challengeDetail?.name }}</el-descriptions-item>
-          <el-descriptions-item label="挑战描述: ">暂无</el-descriptions-item>
-          <el-descriptions-item label="挑战限时: ">100分钟</el-descriptions-item>
+          <el-descriptions-item label="挑战类型: ">{{ challengeDetail?.challengeType }}</el-descriptions-item>
+          <el-descriptions-item label="挑战限时: ">120分钟</el-descriptions-item>
           <el-descriptions-item label="挑战状态: ">
             <el-tag size="small" :type="getChallengeStatus(challengeDetail?.openStatus)">{{ getChallengeStatusText(challengeDetail?.openStatus) }}</el-tag>
           </el-descriptions-item>
@@ -34,7 +34,7 @@
               <el-link type="primary" @click="openNewPage(item)">{{ item }}</el-link>
             </el-descriptions-item> 
           </template>
-          <el-descriptions-item label="Wakeup：" label-align="center" style="display: flex; justify-content: space-between;">
+          <el-descriptions-item label="WriteUp：" label-align="center" style="display: flex; justify-content: space-between;">
             <el-upload
               class="inline-block"
               :headers="tokenHeaders"

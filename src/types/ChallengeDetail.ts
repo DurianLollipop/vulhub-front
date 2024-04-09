@@ -7,5 +7,5 @@
     status: string
     openStatus: string
     address: string[]
-    // challengeType: string
+    challengeType: string
   }

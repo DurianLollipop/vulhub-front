@@ -68,12 +68,16 @@ instance.interceptors.response.use(res => {
   return res
 },
   error => {
+    if(error.response.data.code==="403"){
+      localStorage.token = '';
+      localStorage.removeItem('token');
+      localStorage.removeItem('userInfo')
+      window.location.href = import.meta.env.VITE_APP_OOS_URL;
+    }
     if(error.config.url.includes('challenges')) {
       return error.response.data
     }
-    if(error.response.data.code==="403"){
-      window.location.href = import.meta.env.VITE_APP_OOS_URL;
-    }
+    
     const err = error.response.data.message;
     let msg: Promise<any> = Promise.reject(new Error(`请求错误：${err}`))
     if (err !== '' && err !== null && err !== undefined) {

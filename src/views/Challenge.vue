@@ -1,37 +1,41 @@
 <template>
   <el-row style="height: 750px;overflow: auto;">
-    <el-col :span="3"></el-col>
-    <el-col :span="18">
+    <el-col :span="2"></el-col>
+    <el-col :span="20">
       <el-row :v-show="contentShow" style="height: 100%;" v-infinite-scroll="loadMore" :infinite-scroll-disabled="scrollDisabled" infinite-scroll-distance="10">
         <el-col
           v-for="(data, index) in tableData"
           :key="data.id"
-          :span="5"
-          :offset="index%4 > 0 ? 1 : 0"
+          :span="4"
+          :offset="index%5 > 0 ? 1 : 0"
           class="margin-top-2"
         >
-        <el-card @click="gotoChallenge(data.id)" shadow="always" class="margin-top-28 card-color" >
+        <el-card @click="gotoChallenge(data.id)" shadow="always" class="margin-top-28 card-color box-card" >
           <template #header>
-            <div class="card-header">
+            <div class="card-header " style="height: 20px;">
               <el-tooltip
                 class="box-item"
                 effect="dark"
                 :content="data.name"
                 placement="top-start"
               >
-              <p style="width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{ data.name }}</p>
+              <p style="width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align: center;font-size: 20px;color:#957735;">{{ data.name }}</p>
               </el-tooltip>
             </div>
           </template>
-          <div>
-            <img src="@/assets/info.png" class="image" />
+          <div class="flex-parent">
+            <img src="@/assets/other.png" class="image" />
           </div>
-          <template #footer>{{ formatOpenStatus(data.openStatus) }}</template>
+          <template #footer>
+            <div class="flex-parent">
+              {{ formatOpenStatus(data.openStatus) }}
+            </div>
+          </template>
         </el-card>
         </el-col>
       </el-row>
     </el-col>
-    <el-col :span="3"></el-col>
+    <el-col :span="2"></el-col>
   </el-row>
   
 </template>
@@ -104,7 +108,7 @@ const loadMore = () => {
     currentPage.value += 1;  //滚动之后加载第二页
     const request = {
     "page": currentPage.value,
-    "size": 8
+    "size": 15
   }
     loadData(request);
   }, 500);
@@ -113,7 +117,7 @@ const loadMore = () => {
 onMounted(()=>{
   const params = {
     "page": currentPage.value,
-    "size": 8
+    "size": 15
   }
   loadData(params);
 })
@@ -123,8 +127,8 @@ onMounted(()=>{
 
 .card-color{
   /* 设置背景色为红色，透明度为0.5 */
-  background-color: rgba(157, 198, 255, 0.05);
-   /* background-color: rgba(255, 255, 255, 0.01);  */
+  /* background-color: rgba(157, 198, 255, 0.05); */
+   background-color: #545c6406; 
 
 }
 
@@ -163,12 +167,26 @@ onMounted(()=>{
 }
 
 .image {
-  width: 100%;
+  width: 50%;
   display: block;
-}
+} 
 
 .box-card {
-  width: 480px;
+  width: 230px;
 }
 
+.el-card__header {
+padding: calc(var(--el-card-padding) - 12px) var(--el-card-padding);
+border-bottom: 0px solid var(--el-card-border-color);
+box-sizing: border-box;
+}
+
+.el-card__body {
+padding: calc(var(--el-card-padding) - 12px);
+}
+
+.flex-parent {
+  display: flex;
+  justify-content: center;
+}
 </style>

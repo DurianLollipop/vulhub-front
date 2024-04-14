@@ -1,10 +1,18 @@
 <template>
 	<el-config-provider :locale="locale" name="el" :message="config">
 		<el-container>
-      <el-header>
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false" @select="handleSelect" :router="true">
-          <el-menu-item index="0">
-            <img style="width: 50px" src="@/assets/favicon.ico" alt="Element logo" />
+      <el-header style="padding: 0;">
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false" @select="handleSelect" :router="true" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+          <el-menu-item index="0" style="padding-top: 8px; line-height:100%">
+            <img style="width: 50px;" src="@/assets/blue.png" />
+            <el-row>
+              <el-col>
+                信息安全漏洞平台
+              </el-col>
+              <el-col style="font-size: x-small;">
+                Information Security Vulnerability Platform
+              </el-col>
+            </el-row>
           </el-menu-item>
           <div class="flex-grow"/>
           <el-menu-item index="/">漏洞标靶</el-menu-item>
@@ -15,7 +23,7 @@
           <!-- <el-menu-item index="4"> -->
             <el-avatar class="margin-top-12" :src="avatarUrl" />
             <template v-if="userStore.userInfo.token">
-              <el-button class="ml-5" link @click="logout">退出</el-button>
+              <el-button class="ml-5" link @click="logout" style="color: aliceblue;">退出</el-button>
             </template>
           <!-- </el-menu-item> -->
         </el-menu>

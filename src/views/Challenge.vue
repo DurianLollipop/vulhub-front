@@ -10,7 +10,7 @@
           :offset="index%5 > 0 ? 1 : 0"
           class="margin-top-2"
         >
-        <el-card @click="gotoChallenge(data.id)" shadow="always" class="margin-top-28 card-color box-card" >
+        <el-card @click="gotoChallenge(data.id)" shadow="always" class="margin-top-28 card-color " >
           <template #header>
             <div class="card-header " style="height: 20px;">
               <el-tooltip
@@ -19,12 +19,12 @@
                 :content="data.name"
                 placement="top-start"
               >
-              <p style="width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align: center;font-size: 20px;color:#957735;">{{ data.name }}</p>
+              <p style="width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align: center;font-size: 18px;color:#957735;">{{ data.name }}</p>
               </el-tooltip>
             </div>
           </template>
           <div class="flex-parent">
-            <img src="@/assets/other.png" class="image" />
+            <img src="@/assets/other.png" style="width: 50%;object-fit: contain;" class="image" />
           </div>
           <template #footer>
             <div class="flex-parent">

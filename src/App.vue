@@ -9,7 +9,7 @@
               <el-col>
                 信息安全漏洞平台
               </el-col>
-              <el-col style="font-size: x-small;">
+              <el-col style="font-size: xx-small;">
                 Information Security Vulnerability Platform
               </el-col>
             </el-row>

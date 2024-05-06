@@ -85,7 +85,6 @@ const loadData = (params: object) => {
 }
 
 onMounted(()=>{
-  console.log("ggggg")
   const params = {
     "page": currentPage.value,
     "size": 10
@@ -94,8 +93,6 @@ onMounted(()=>{
 })
 
 onBeforeMount(() => {
-  console.log("hhhh")
-
   const params = {
     "page": currentPage.value,
     "size": 10

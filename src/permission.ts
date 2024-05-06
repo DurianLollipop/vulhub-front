@@ -14,15 +14,8 @@ router.beforeEach( async (to, _from, next) => {
 	if (cacheUserInfo) {
 		useUser.SET_INFO(cacheUserInfo)
 		useMean.setUserMenuList(useUser.userInfo.admin)
-		router.getRoutes().forEach((route) => {
-			console.log("+++++", route.path)
-		});
 		useMean.menuList.forEach(route => {
 			router.addRoute(route);
-		});
-
-		router.getRoutes().forEach((route) => {
-			console.log("------", route.path)
 		});
 	}
 	if (!useUser.token) {

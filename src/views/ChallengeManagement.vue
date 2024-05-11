@@ -11,14 +11,21 @@
         <el-col :span="6">
           <el-input v-model="searchParam" size="large" placeholder="搜索匹配的挑战" />
         </el-col>
-        <el-col :span="2" class="margin-left-12">
+        <el-col :span="2">
           <el-button type="primary" size="large" @click="searchData">搜索</el-button>
+        </el-col>
+        <el-col :span="3">
+          <el-button type="primary" size="large" @click="batchEnable">批量启用</el-button>
+        </el-col>
+        <el-col :span="3">
+          <el-button type="primary" size="large" @click="batchDisable">批量禁用</el-button>
         </el-col>
       </el-row>
       
       <el-row class="margin-top-12">
         <el-col :span="24">
-          <el-table :data="tableData" border style="width: 100%">
+          <el-table :data="tableData" @selection-change="handleSelectionChange" border style="width: 100%">
+            <el-table-column type="selection" />
             <el-table-column prop="id" label="Id" width="60" />
             <el-table-column prop="name" label="挑战名称" width="auto" min-width="25%" />
             <el-table-column prop="challengeType" label="挑战类别" width="200" />
@@ -43,6 +50,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeMount } from 'vue'
 import api from '@/api/index'
+// import { ElTable } from 'element-plus'
 
 const searchType = ref('Type_Name')
 const searchParam = ref('')
@@ -50,6 +58,7 @@ const searchParam = ref('')
 const total = ref(0)
 // 总条数
 const currentPage = ref(1)
+const multipleTableRef = ref([])
 
 const options = [
   {
@@ -63,6 +72,14 @@ const options = [
 ]
 
 const tableData = ref<ChallengeManageInfo[]>([])
+
+const handleSelectionChange = (val) => {
+  const selectIds = [];
+  val.forEach((row) => {
+    selectIds.push(row.id)
+  });
+  multipleTableRef.value = selectIds;
+}
 
 const loadData = (params: object) => {
   const request = {
@@ -113,6 +130,48 @@ const searchData = () => {
     params.status = searchParam.value;
   }
   loadData(params);
+}
+
+const batchEnable = () => {
+  const request = {
+    "data": {
+      "status": "SHOW",
+      "ids": multipleTableRef.value
+    }
+  }
+  api.batchChallengesStatus(request)
+    .then(response => {
+      if(response.data && response.data.code === "200") {
+        ElMessage.success('状态批量启用成功')
+        searchData();
+      } else {
+        ElMessage.error('状态批量启用失败')
+      }
+    })
+    .catch(_error => {
+      ElMessage.error('状态批量启用失败')
+    });
+}
+
+const batchDisable = () => {
+  const request = {
+    "data": {
+      "status": "HIDDEN",
+      "ids": multipleTableRef.value
+    }
+  }
+  api.batchChallengesStatus(request)
+    .then(response => {
+      if(response.data && response.data.code === "200") {
+        ElMessage.success('状态批量禁用成功')
+        searchData();
+      } else {
+        ElMessage.error('状态批量禁用失败')
+      }
+    })
+    .catch(_error => {
+      ElMessage.error('状态批量禁用失败')
+    });
 }
 
 const beforeShowChangeManage = (row: any) => new Promise((resolve, reject)=>{   

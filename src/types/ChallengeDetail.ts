@@ -8,4 +8,5 @@
     openStatus: string
     address: string[]
     challengeType: string
+    description: string
   }

@@ -1,4 +1,30 @@
-<template>
+<template>   
+  <el-row>
+    <el-col :span="2"></el-col>
+    <el-col :span="20">
+      挑战类型：
+      <el-button
+        key="全部"
+        type="primary"
+        @click="selectedType('全部')"
+        :bg="selectType === '全部'"
+        text
+      >
+        全部
+      </el-button>
+      <el-button
+        v-for="challengesType in challengesTypes"
+        :key="challengesType"
+        type="primary"
+        @click="selectedType(challengesType)"
+        :bg="selectType === challengesType"
+        text
+      >
+        {{ challengesType }}
+      </el-button>
+    </el-col>
+    <el-col :span="2"></el-col>
+    </el-row>
   <el-row style="height: 750px;overflow: auto;">
     <el-col :span="2"></el-col>
     <el-col :span="20">
@@ -10,7 +36,7 @@
           :offset="index%5 > 0 ? 1 : 0"
           class="margin-top-2"
         >
-        <el-card @click="gotoChallenge(data.id)" shadow="always" class="margin-top-28 card-color " >
+        <el-card @click="gotoChallenge(data.id)" shadow="always" class="margin-bottom-28 card-color " >
           <template #header>
             <div class="card-header " style="height: 20px;">
               <el-tooltip
@@ -52,6 +78,8 @@ const pageSize = 8;
 const scrollDisabled = ref(true);
 const contentShow = ref(true);
 const infiniteMsgShow = ref(false);
+const challengesTypes = ref([]);
+const selectType = ref('全部');
 
 const router = useRouter()
 
@@ -114,8 +142,29 @@ const loadMore = () => {
   }, 500);
 }
 
-onMounted(()=>{
+const loadChallengesTypes = () => {
+  api.getChallengesTypes().then((res:any)=>{
+    if(res.data.code === '200'){
+      challengesTypes.value = res.data.data;
+    }
+  })
+}
+
+const selectedType = (item: string) => {
+  selectType.value = item
+  tableData.value = []
   const params = {
+    "challengeType": selectType.value,
+    "page": currentPage.value,
+    "size": 15
+  }
+  loadData(params);
+}
+
+onMounted(()=>{
+  loadChallengesTypes();
+  const params = {
+    "challengeType": selectType.value,
     "page": currentPage.value,
     "size": 15
   }
@@ -124,6 +173,10 @@ onMounted(()=>{
 </script>
 
 <style>
+
+.el-button + .el-button {
+  margin-left: 0;
+}
 
 .card-color{
   /* 设置背景色为红色，透明度为0.5 */
@@ -142,6 +195,10 @@ onMounted(()=>{
 
 .margin-top-28 {
   margin-top: 28px;
+}
+
+.margin-bottom-28 {
+  margin-bottom: 28px;
 }
 
 .ml-2 {

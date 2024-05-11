@@ -14,7 +14,7 @@
                     安全漏洞实战训练场
                   </el-col>
                   <el-col style="font-size: xx-small;">
-                    Information Security Vulnerability Platform
+                    Security Vulnerability Training Ground
                   </el-col>
                 </el-row>
               </el-col>

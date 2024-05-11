@@ -12,6 +12,8 @@ const challengeApi = {
   closeScene: (challengeId: number) => Request.post(`/v1/close/${challengeId}`),
   // 上传文件
   uploadFile: (file: any) => Request.post(`/v1/wakeup/upload`, file),
+  // 挑战类型
+  getChallengesTypes: () => Request.get(`/v1/challenges/types`),
 };
 
 export default challengeApi;

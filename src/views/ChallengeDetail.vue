@@ -16,7 +16,7 @@
         </template>
         <el-descriptions :column="1">
           <el-descriptions-item label="挑战名称: ">{{ challengeDetail?.name }}</el-descriptions-item>
-          <el-descriptions-item label="挑战类型: ">{{ challengeDetail?.challengeType }}</el-descriptions-item>
+          <el-descriptions-item label="挑战描述: ">{{ challengeDetail?.description }}</el-descriptions-item>
           <el-descriptions-item label="挑战限时: ">120分钟</el-descriptions-item>
           <el-descriptions-item label="挑战状态: ">
             <el-tag size="small" :type="getChallengeStatus(challengeDetail?.openStatus)">{{ getChallengeStatusText(challengeDetail?.openStatus) }}</el-tag>

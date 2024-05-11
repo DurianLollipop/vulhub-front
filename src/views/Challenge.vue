@@ -135,6 +135,7 @@ const loadMore = () => {
   setTimeout(() => {  //发送请求有时间间隔第一个滚动时间结束后才发送第二个请求
     currentPage.value += 1;  //滚动之后加载第二页
     const request = {
+    "challengeType": selectType.value,
     "page": currentPage.value,
     "size": 15
   }
@@ -152,6 +153,7 @@ const loadChallengesTypes = () => {
 
 const selectedType = (item: string) => {
   selectType.value = item
+  currentPage.value = 1;
   tableData.value = []
   const params = {
     "challengeType": selectType.value,

@@ -25,7 +25,7 @@
     </el-col>
     <el-col :span="2"></el-col>
     </el-row>
-  <el-row style="height: 750px;overflow: auto;">
+  <el-row style="height: 700px;overflow: auto;">
     <el-col :span="2"></el-col>
     <el-col :span="20">
       <el-row :v-show="contentShow" style="height: 100%;" v-infinite-scroll="loadMore" :infinite-scroll-disabled="scrollDisabled" infinite-scroll-distance="10">
@@ -63,9 +63,7 @@
     </el-col>
     <el-col :span="2"></el-col>
   </el-row>
-  
 </template>
-
 
 <script lang="ts" setup>
 import {useRouter } from 'vue-router'
@@ -164,6 +162,9 @@ const selectedType = (item: string) => {
 }
 
 onMounted(()=>{
+  const footerNode = document.querySelector('footer');
+  const parent = footerNode.parentNode;
+  parent.removeChild(footerNode);
   loadChallengesTypes();
   const params = {
     "challengeType": selectType.value,

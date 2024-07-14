@@ -2,33 +2,36 @@
   <el-row>
     <el-col :span="2"></el-col>
     <el-col :span="20">
-      挑战类型：
-      <el-button
-        key="全部"
-        type="primary"
-        @click="selectedType('全部')"
-        :bg="selectType === '全部'"
-        text
-      >
-        全部
-      </el-button>
-      <el-button
-        v-for="challengesType in challengesTypes"
-        :key="challengesType"
-        type="primary"
-        @click="selectedType(challengesType)"
-        :bg="selectType === challengesType"
-        text
-      >
-        {{ challengesType }}
-      </el-button>
+      <el-row>
+        挑战类型：
+        <el-button
+          key="全部"
+          type="primary"
+          @click="selectedType('全部')"
+          :bg="selectType === '全部'"
+          text
+        >
+          全部
+        </el-button>
+        <el-button
+          v-for="challengesType in challengesTypes"
+          :key="challengesType"
+          type="primary"
+          @click="selectedType(challengesType)"
+          :bg="selectType === challengesType"
+          text
+        >
+          {{ challengesType }}
+        </el-button>
+      </el-row>
+      <el-row></el-row>
     </el-col>
     <el-col :span="2"></el-col>
     </el-row>
-  <el-row style="height: 700px;overflow: auto;">
+  <el-row>
     <el-col :span="2"></el-col>
     <el-col :span="20">
-      <el-row :v-show="contentShow" style="height: 100%;" v-infinite-scroll="loadMore" :infinite-scroll-disabled="scrollDisabled" infinite-scroll-distance="10">
+      <el-row :v-show="contentShow">
         <el-col
           v-for="(data, index) in tableData"
           :key="data.id"
@@ -60,22 +63,27 @@
         </el-card>
         </el-col>
       </el-row>
+      <el-row justify="end">
+        <el-pagination background layout="prev, pager, next" :page-size="pageSize" :total="total" v-model:current-page="currentPage" @change="searchData" />
+      </el-row>
     </el-col>
     <el-col :span="2"></el-col>
   </el-row>
+ 
 </template>
 
 <script lang="ts" setup>
 import {useRouter } from 'vue-router'
 import api from '@/api/index'
 const tableData = ref<ChallengeInfo[]>([])
+// 总记录数
+const total = ref(0)
 // 当前页数
 const currentPage = ref(1);
+
+const pageSize = 15
 // 每页条数
-const pageSize = 8;
-const scrollDisabled = ref(true);
 const contentShow = ref(true);
-const infiniteMsgShow = ref(false);
 const challengesTypes = ref([]);
 const selectType = ref('全部');
 
@@ -95,27 +103,17 @@ const loadData = (params: object) => {
   }
   api.getChallenges(request)
   .then(result => {
-      const listTotal = result.data.totalCount
-      if (listTotal > 0) {
-        contentShow.value = true
-      } else {
-        contentShow.value = false
-      }
-      tableData.value = tableData.value.concat(result.data.data)
-      const DownloadTotal = (currentPage.value + 1) * pageSize
-      if (DownloadTotal >= result.data.totalCount) {
-        scrollDisabled.value = true // 将无限滚动关闭
-        currentPage.value = 0 // 页数变为0
-        infiniteMsgShow.value = false // 切换底部提示信息
-      } else {
-        scrollDisabled.value = false // 将无限滚动给打开
-        infiniteMsgShow.value = true
-      }
-    })
-    .catch(error => {
-      ElMessage.error('数据加载失败', error)
-      contentShow.value = false
-    })
+    if(result.data.data) {
+      console.log(result.data)
+      total.value = result.data.totalCount
+      tableData.value = result.data.data;
+      currentPage.value = result.data.currentPage
+    } 
+  })
+  .catch(error => {
+    ElMessage.error('数据加载失败', error)
+    contentShow.value = false
+  })
 }
 
 const formatOpenStatus = (openStatus: string) => {
@@ -128,17 +126,13 @@ const formatOpenStatus = (openStatus: string) => {
   return openStatusStr;
 }
 
-const loadMore = () => {         
-  scrollDisabled.value=true  //将无限滚动给禁用
-  setTimeout(() => {  //发送请求有时间间隔第一个滚动时间结束后才发送第二个请求
-    currentPage.value += 1;  //滚动之后加载第二页
+const searchData = () => {         
     const request = {
     "challengeType": selectType.value,
     "page": currentPage.value,
-    "size": 15
+    "size": pageSize
   }
-    loadData(request);
-  }, 500);
+  loadData(request);
 }
 
 const loadChallengesTypes = () => {
@@ -156,20 +150,22 @@ const selectedType = (item: string) => {
   const params = {
     "challengeType": selectType.value,
     "page": currentPage.value,
-    "size": 15
+    "size": pageSize
   }
   loadData(params);
 }
 
 onMounted(()=>{
   const footerNode = document.querySelector('footer');
-  const parent = footerNode.parentNode;
-  parent.removeChild(footerNode);
+  if (footerNode) {
+    const parent = footerNode.parentNode;
+    parent.removeChild(footerNode);
+  }
   loadChallengesTypes();
   const params = {
     "challengeType": selectType.value,
     "page": currentPage.value,
-    "size": 15
+    "size": pageSize
   }
   loadData(params);
 })

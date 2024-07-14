@@ -31,6 +31,11 @@ export const useMeanStore =  defineStore('mean', () => {
           name: 'commitManagement',
           component: () => import('@/views/CommitManagement.vue'),
         },
+        {
+          path: '/statistics',
+          name: 'statistics',
+          component: () => import('@/views/Statistics.vue'),
+        },
       ]
     } 
   }

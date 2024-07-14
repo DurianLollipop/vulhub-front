@@ -27,6 +27,7 @@
               <template v-if="userStore.userInfo.admin">
                 <el-menu-item index="/challengeManagement">挑战管理</el-menu-item>
                 <el-menu-item index="/commitManagement">解答提交管理</el-menu-item>
+                <el-menu-item index="/statistics">数据统计</el-menu-item>
               </template>
                 <el-avatar class="margin-top-12" :src="avatarUrl" />
                 <template v-if="userStore.userInfo.token">

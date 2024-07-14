@@ -61,6 +61,8 @@
 import zhCn from 'element-plus/dist/locale/zh-cn';
 import { useRoute } from 'vue-router';
 import { useUserStore } from '@/store/user'
+import api from '@/api/index'
+
 
 const activeIndex = ref('')
 const userStore = useUserStore()
@@ -96,7 +98,17 @@ zhCn.el.pagination = {
 };
 
 const downManualDoc = () => {
-   window.location.href = `${import.meta.env.VITE_APP_API_URL}/doc/manual.docx`;
+  //  window.location.href = `${import.meta.env.VITE_APP_API_URL}/doc/manual.docx`;
+  api.getmanual()
+  .then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=binary'}));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `manual.docx`);
+    document.body.appendChild(link);
+    link.click();
+  })
+ .catch()
 }
 
 const config = reactive({

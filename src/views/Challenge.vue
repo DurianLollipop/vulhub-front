@@ -104,7 +104,6 @@ const loadData = (params: object) => {
   api.getChallenges(request)
   .then(result => {
     if(result.data.data) {
-      console.log(result.data)
       total.value = result.data.totalCount
       tableData.value = result.data.data;
       currentPage.value = result.data.currentPage

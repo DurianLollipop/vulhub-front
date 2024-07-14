@@ -14,6 +14,8 @@ const challengeApi = {
   uploadFile: (file: any) => Request.post(`/v1/wakeup/upload`, file),
   // 挑战类型
   getChallengesTypes: () => Request.get(`/v1/challenges/types`),
+  // 获取操作手册
+  getmanual: () => Request.get(`/v1/download/manual`),
 };
 
 export default challengeApi;

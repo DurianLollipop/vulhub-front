@@ -29,10 +29,20 @@
                 <el-menu-item index="/commitManagement">解答提交管理</el-menu-item>
                 <el-menu-item index="/statistics">数据统计</el-menu-item>
               </template>
-                <el-avatar class="margin-top-12" :src="avatarUrl" />
-                <template v-if="userStore.userInfo.token">
-                  <el-button class="ml-5" link @click="logout" style="color: aliceblue;margin-right: 10px;">退出</el-button>
+
+              <el-sub-menu index="2">
+                <template #title>
+                  <el-avatar class="margin-top-12" :src="avatarUrl" />
                 </template>
+                <template v-if="userStore.userInfo.token" >
+                  <el-menu-item>
+                    <el-button class="ml-5" link @click="downManualDoc" style="color: aliceblue;margin-right: 10px; width: 100%;">操作手册</el-button>
+                  </el-menu-item>
+                </template>
+                <el-menu-item>
+                  <el-button class="ml-5" link @click="logout" style="color: aliceblue;margin-right: 10px; width: 100%;">退出</el-button>
+                </el-menu-item>
+              </el-sub-menu>
             </el-menu>
           </el-col>
         </el-row>
@@ -85,6 +95,10 @@ zhCn.el.pagination = {
 	pageClassifier: '页',
 };
 
+const downManualDoc = () => {
+   window.location.href = `${import.meta.env.VITE_APP_API_URL}/doc/manual.docx`;
+}
+
 const config = reactive({
 	max: 3,
 });
@@ -97,6 +111,10 @@ const config = reactive({
  padding-bottom: 7px
 ;
  font-family: simsun;
+}
+
+.el-menu--collapse .el-menu .el-submenu, .el-menu--popup{
+  min-width: 100px!important;
 }
 
 .flex-grow {

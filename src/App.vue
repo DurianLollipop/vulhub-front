@@ -29,15 +29,17 @@
                 <el-menu-item index="/commitManagement">解答提交管理</el-menu-item>
                 <el-menu-item index="/statistics">数据统计</el-menu-item>
               </template>
-
+              <el-menu-item>
+                    <el-button class="ml-5" link @click="downManualDoc" style="color: aliceblue;margin-right: 10px; width: 100%;">操作手册</el-button>
+                  </el-menu-item>
               <el-sub-menu index="2">
                 <template #title>
                   <el-avatar class="margin-top-12" :src="avatarUrl" />
                 </template>
                 <template v-if="userStore.userInfo.token" >
-                  <el-menu-item>
+                  <!-- <el-menu-item>
                     <el-button class="ml-5" link @click="downManualDoc" style="color: aliceblue;margin-right: 10px; width: 100%;">操作手册</el-button>
-                  </el-menu-item>
+                  </el-menu-item> -->
                 </template>
                 <el-menu-item>
                   <el-button class="ml-5" link @click="logout" style="color: aliceblue;margin-right: 10px; width: 100%;">退出</el-button>
